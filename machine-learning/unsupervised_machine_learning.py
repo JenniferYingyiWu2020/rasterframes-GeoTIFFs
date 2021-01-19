@@ -1,0 +1,113 @@
+# Imports and Data Preparation
+# We import various Spark components needed to construct our Pipeline.
+import pandas as pd
+from pyrasterframes import TileExploder
+from pyrasterframes.rasterfunctions import *
+
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.clustering import KMeans
+from pyspark.ml import Pipeline
+
+from pyrasterframes.utils import create_rf_spark_session
+
+from pyrasterframes.rf_types import CellType
+# from pyrasterframes.rf_types import Extent
+
+import os.path
+
+import rasterio
+from rasterio.plot import show, show_hist
+
+spark = create_rf_spark_session()
+
+# The first step is to create a Spark DataFrame of our imagery data.
+# To achieve that we will create a catalog DataFrame using the pattern from the I/O page.
+# In the catalog, each row represents a distinct area and time, and each column is the URI to a band’s image product.
+# The resulting Spark DataFrame may have many rows per URI, with a column corresponding to each band.
+filenamePattern = "file:///home/jenniferwu/notebooks/samples/resources/L8-B{}-Elkton-VA.tiff"
+catalog_df = pd.DataFrame([
+    {'b' + str(b): filenamePattern.format(b) for b in range(1, 8)}
+])
+
+df = spark.read.raster(catalog_df, catalog_col_names=catalog_df.columns)
+df = df.withColumn('crs', rf_crs(df.b1)) \
+    .withColumn('extent', rf_extent(df.b1))
+df.printSchema()
+
+# Create ML Pipeline
+# SparkML requires that each observation be in its own row,
+# and features for each observation be packed into a single Vector.
+# For this unsupervised learning problem, we will treat each pixel as an observation and each band as a feature.
+# The first step is to “explode” the tiles into a single row per pixel.
+# In RasterFrames, generally a pixel is called a cell.
+exploder = TileExploder()
+
+# To “vectorize” the the band columns, we use the SparkML VectorAssembler.
+# Each of the seven bands is a different feature.
+# assembler = VectorAssembler() \
+#     .setInputCols(list(catalog_df.columns)) \
+#     .setOutputCol("features")
+
+assembler = VectorAssembler(inputCols=list(catalog_df.columns), outputCol="features", handleInvalid="skip")
+
+# For this problem, we will use the K-means clustering algorithm and configure our model to have 5 clusters.
+kmeans = KMeans().setK(5).setFeaturesCol('features')
+
+# We can combine the above stages into a single Pipeline.
+pipeline = Pipeline().setStages([exploder, assembler, kmeans])
+
+# Fit the Model and Score
+# Fitting the pipeline actually executes exploding the tiles, assembling the features vectors,
+# and fitting the K-means clustering model.
+model = pipeline.fit(df)
+
+# We can use the transform function to score the training data in the fitted pipeline model.
+# This will add a column called prediction with the closest cluster identifier.
+clustered = model.transform(df)
+
+# Now let’s take a look at some sample output.
+clustered.select('prediction', 'extent', 'column_index', 'row_index', 'features')
+
+# If we want to inspect the model statistics,
+# the SparkML API requires us to go through this unfortunate contortion to access the clustering results:
+cluster_stage = model.stages[2]
+
+# We can then compute the sum of squared distances of points to their nearest center,
+# which is elemental to most cluster quality metrics.
+metric = cluster_stage.computeCost(clustered)
+print("Within set sum of squared errors: %s" % metric)
+
+# Visualize Prediction
+# We can recreate the tiled data structure using the metadata added by the TileExploder pipeline stage.
+
+tile_dims = df.select(rf_dimensions(df.b1).alias('dims')).first()['dims']
+retiled = clustered.groupBy('extent', 'crs') \
+    .agg(
+    rf_assemble_tile('column_index', 'row_index', 'prediction',
+                     tile_dims['cols'], tile_dims['rows'], CellType.int8()).alias('prediction')
+)
+
+# The resulting output is shown below.
+
+# aoi = Extent.from_row(
+#     retiled.agg(rf_agg_reprojected_extent('extent', 'crs', 'epsg:3857')) \
+#         .first()[0]
+# )
+#
+# retiled.select(rf_agg_overview_raster('prediction', 558, 507, aoi, 'extent', 'crs'))
+
+# For comparison, the true color composite of the original data.
+#  this is really dark
+# df.select(rf_render_png('b4', 'b3', 'b2'))
+
+# ============================================Writing Raster Data - GeoTIFFs============================================
+outfile = os.path.join('/tmp', 'geotiff-unsupervised-machine-learning.tif')
+retiled.select('prediction', 'crs', 'extent').write.geotiff(outfile, crs='epsg:3857', raster_dimensions=(558, 507))
+
+# ======================================We can view the written file with `rasterio`====================================
+with rasterio.open(outfile) as src:
+    # View raster
+    show(src, adjust='linear')
+    # View data distribution
+    show_hist(src, bins=50, lw=0.0, stacked=False, alpha=0.6,
+              histtype='stepfilled', title="Overview Histogram")
