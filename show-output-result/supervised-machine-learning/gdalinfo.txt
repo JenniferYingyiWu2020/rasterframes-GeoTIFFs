@@ -1,0 +1,55 @@
+Warning 1: TIFFReadDirectory:Sum of Photometric type-related color channels and ExtraSamples doesn't match SamplesPerPixel. Defining non-color channels as ExtraSamples.
+
+'Driver: GTiff/GeoTIFF
+Files: /tmp/geotiff-supervised-machine-learning.tif
+
+Size is 558, 507
+Coordinate System is:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                        LENGTHUNIT["metre",1]]],
+                            PRIMEM["Greenwich",0,
+                                    ANGLEUNIT["degree",0.0174532925199433]],
+                                        CS[ellipsoidal,2],
+                                                AXIS["geodetic latitude (Lat)",north,
+                                                            ORDER[1],
+                                                                        ANGLEUNIT["degree",0.0174532925199433]],
+                                                                                AXIS["geodetic longitude (Lon)",east,
+                                                                                            ORDER[2],
+                                                                                                        ANGLEUNIT["degree",0.0174532925199433]],
+                                                                                                            USAGE[
+                                                                                                                    SCOPE["unknown"],
+                                                                                                                            AREA["World"],
+                                                                                                                                    BBOX[-90,-180,90,180]],
+                                                                                                                                        ID["EPSG",4326]]
+                                                                                                                                        Data axis to CRS axis mapping: 2,1
+                                                                                                                                        Origin = (-78.714123109391835,38.800547298901463)
+                                                                                                                                        Pixel Size = (0.002295141985034,-0.001343897129705)
+                                                                                                                                        Metadata:
+                                                                                                                                          AREA_OR_POINT=Area
+                                                                                                                                            version=0.9.0
+                                                                                                                                            Image Structure Metadata:
+                                                                                                                                              INTERLEAVE=BAND
+                                                                                                                                              Corner Coordinates:
+                                                                                                                                              Upper Left  ( -78.7141231,  38.8005473) ( 78d42\'50.84"W, 38d48\' 1.97"N)
+                                                                                                                                              Lower Left  ( -78.7141231,  38.1191915) ( 78d42\'50.84"W, 38d 7\' 9.09"N)
+                                                                                                                                              Upper Right ( -77.4334339,  38.8005473) ( 77d26\' 0.36"W, 38d48\' 1.97"N)
+                                                                                                                                              Lower Right ( -77.4334339,  38.1191915) ( 77d26\' 0.36"W, 38d 7\' 9.09"N)
+                                                                                                                                              Center      ( -78.0737785,  38.4598694) ( 78d 4\'25.60"W, 38d27\'35.53"N)
+                                                                                                                                              Band 1 Block=256x256 Type=Float64, ColorInterp=Red
+                                                                                                                                                NoData Value=nan
+                                                                                                                                                  Metadata:
+                                                                                                                                                      RF_COL=prediction
+                                                                                                                                                      Band 2 Block=256x256 Type=Float64, ColorInterp=Green
+                                                                                                                                                        NoData Value=nan
+                                                                                                                                                          Metadata:
+                                                                                                                                                              RF_COL=red
+                                                                                                                                                              Band 3 Block=256x256 Type=Float64, ColorInterp=Blue
+                                                                                                                                                                NoData Value=nan
+                                                                                                                                                                  Metadata:
+                                                                                                                                                                      RF_COL=grn
+                                                                                                                                                                      Band 4 Block=256x256 Type=Float64, ColorInterp=Undefined
+                                                                                                                                                                        NoData Value=nan
+                                                                                                                                                                          Metadata:
+                                                                                                                                                                              RF_COL=blu'
