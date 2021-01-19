@@ -1,0 +1,665 @@
+root
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- scl: tile (nullable = true)
+ |-- B01: tile (nullable = true)
+ |-- B02: tile (nullable = true)
+ |-- B03: tile (nullable = true)
+ |-- B04: tile (nullable = true)
+ |-- B05: tile (nullable = true)
+ |-- B06: tile (nullable = true)
+ |-- B07: tile (nullable = true)
+ |-- B08: tile (nullable = true)
+ |-- B09: tile (nullable = true)
+ |-- B11: tile (nullable = true)
+ |-- B12: tile (nullable = true)
+
+Found  1 distinct CRS.
+root
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- scl: tile (nullable = true)
+ |-- B01: tile (nullable = true)
+ |-- B02: tile (nullable = true)
+ |-- B03: tile (nullable = true)
+ |-- B04: tile (nullable = true)
+ |-- B05: tile (nullable = true)
+ |-- B06: tile (nullable = true)
+ |-- B07: tile (nullable = true)
+ |-- B08: tile (nullable = true)
+ |-- B09: tile (nullable = true)
+ |-- B11: tile (nullable = true)
+ |-- B12: tile (nullable = true)
+ |-- id: long (nullable = true)
+ |-- geometry: geometry (nullable = true)
+ |-- dims: struct (nullable = true)
+ |    |-- cols: integer (nullable = false)
+ |    |-- rows: integer (nullable = false)
+ |-- label: tile (nullable = true)
+ |-- mask: tile (nullable = true)
+
+root
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- id: long (nullable = true)
+ |-- geometry: geometry (nullable = true)
+ |-- dims: struct (nullable = true)
+ |    |-- cols: integer (nullable = false)
+ |    |-- rows: integer (nullable = false)
+ |-- column_index: integer (nullable = false)
+ |-- row_index: integer (nullable = false)
+ |-- scl: double (nullable = false)
+ |-- B01: double (nullable = false)
+ |-- B02: double (nullable = false)
+ |-- B03: double (nullable = false)
+ |-- B04: double (nullable = false)
+ |-- B05: double (nullable = false)
+ |-- B06: double (nullable = false)
+ |-- B07: double (nullable = false)
+ |-- B08: double (nullable = false)
+ |-- B09: double (nullable = false)
+ |-- B11: double (nullable = false)
+ |-- B12: double (nullable = false)
+ |-- label: double (nullable = false)
+ |-- mask: double (nullable = false)
+ |-- rawPrediction: vector (nullable = true)
+ |-- probability: vector (nullable = true)
+ |-- prediction: double (nullable = false)
+
+
+Accuracy: 0.9759896664387204
+root
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- prediction: tile (nullable = true)
+ |-- red: tile (nullable = true)
+ |-- grn: tile (nullable = true)
+ |-- blu: tile (nullable = true)
+
+[Stage 78:>                                                       (0 + 8) / 200]21/01/19 14:01:16 ERROR Executor: Exception in task 7.0 in stage 78.0 (TID 4589)
+java.lang.OutOfMemoryError: Java heap space
+	at scala.reflect.ManifestFactory$$anon$12.newArray(Manifest.scala:141)
+	at scala.reflect.ManifestFactory$$anon$12.newArray(Manifest.scala:139)
+	at scala.Array$.ofDim(Array.scala:218)
+	at geotrellis.raster.DoubleArrayTile$.fill(DoubleArrayTile.scala:334)
+	at geotrellis.raster.DoubleArrayTile$.empty(DoubleArrayTile.scala:302)
+	at geotrellis.raster.ArrayTile$.empty(ArrayTile.scala:451)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.newBuffer(SortBasedAggregationIterator.scala:68)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.<init>(SortBasedAggregationIterator.scala:89)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:86)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:123)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$10.apply(Executor.scala:408)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1360)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:414)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+21/01/19 14:01:16 ERROR Executor: Exception in task 4.0 in stage 78.0 (TID 4586)
+java.lang.OutOfMemoryError: Java heap space
+	at geotrellis.raster.DoubleArrayTile.toBytes(DoubleArrayTile.scala:37)
+	at org.locationtech.rasterframes.model.Cells$.apply(Cells.scala:65)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:88)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$class.toInternalRow(CatalystSerializer.scala:46)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.toInternalRow(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$WithToRow.toInternalRow(CatalystSerializer.scala:146)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:39)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$UDTConverter.toCatalystImpl(CatalystTypeConverters.scala:143)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$CatalystTypeConverter.toCatalyst(CatalystTypeConverters.scala:103)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$$anonfun$createToCatalystConverter$2.apply(CatalystTypeConverters.scala:396)
+	at org.apache.spark.sql.execution.aggregate.MutableAggregationBufferImpl.update(udaf.scala:246)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.outputForEmptyGroupingKeyWithoutInput(SortBasedAggregationIterator.scala:162)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:102)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+21/01/19 14:01:17 ERROR SparkUncaughtExceptionHandler: Uncaught exception in thread Thread[Executor task launch worker for task 4586,5,main]
+java.lang.OutOfMemoryError: Java heap space
+	at geotrellis.raster.DoubleArrayTile.toBytes(DoubleArrayTile.scala:37)
+	at org.locationtech.rasterframes.model.Cells$.apply(Cells.scala:65)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:88)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$class.toInternalRow(CatalystSerializer.scala:46)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.toInternalRow(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$WithToRow.toInternalRow(CatalystSerializer.scala:146)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:39)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$UDTConverter.toCatalystImpl(CatalystTypeConverters.scala:143)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$CatalystTypeConverter.toCatalyst(CatalystTypeConverters.scala:103)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$$anonfun$createToCatalystConverter$2.apply(CatalystTypeConverters.scala:396)
+	at org.apache.spark.sql.execution.aggregate.MutableAggregationBufferImpl.update(udaf.scala:246)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.outputForEmptyGroupingKeyWithoutInput(SortBasedAggregationIterator.scala:162)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:102)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+21/01/19 14:01:17 ERROR SparkUncaughtExceptionHandler: [Container in shutdown] Uncaught exception in thread Thread[Executor task launch worker for task 4589,5,main]
+java.lang.OutOfMemoryError: Java heap space
+	at scala.reflect.ManifestFactory$$anon$12.newArray(Manifest.scala:141)
+	at scala.reflect.ManifestFactory$$anon$12.newArray(Manifest.scala:139)
+	at scala.Array$.ofDim(Array.scala:218)
+	at geotrellis.raster.DoubleArrayTile$.fill(DoubleArrayTile.scala:334)
+	at geotrellis.raster.DoubleArrayTile$.empty(DoubleArrayTile.scala:302)
+	at geotrellis.raster.ArrayTile$.empty(ArrayTile.scala:451)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.newBuffer(SortBasedAggregationIterator.scala:68)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.<init>(SortBasedAggregationIterator.scala:89)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:86)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:123)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$10.apply(Executor.scala:408)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1360)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:414)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+[Stage 78:>                                                       (0 + 9) / 200]21/01/19 14:01:17 ERROR Executor: Exception in task 2.0 in stage 78.0 (TID 4584)
+java.lang.OutOfMemoryError: Java heap space
+21/01/19 14:01:18 ERROR Executor: Exception in task 1.0 in stage 78.0 (TID 4583)
+java.lang.OutOfMemoryError: Java heap space
+21/01/19 14:01:18 ERROR SparkUncaughtExceptionHandler: [Container in shutdown] Uncaught exception in thread Thread[Executor task launch worker for task 4584,5,main]
+java.lang.OutOfMemoryError: Java heap space
+21/01/19 14:01:18 WARN TaskSetManager: Lost task 4.0 in stage 78.0 (TID 4586, localhost, executor driver): java.lang.OutOfMemoryError: Java heap space
+	at geotrellis.raster.DoubleArrayTile.toBytes(DoubleArrayTile.scala:37)
+	at org.locationtech.rasterframes.model.Cells$.apply(Cells.scala:65)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:88)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$class.toInternalRow(CatalystSerializer.scala:46)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.toInternalRow(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$WithToRow.toInternalRow(CatalystSerializer.scala:146)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:39)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$UDTConverter.toCatalystImpl(CatalystTypeConverters.scala:143)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$CatalystTypeConverter.toCatalyst(CatalystTypeConverters.scala:103)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$$anonfun$createToCatalystConverter$2.apply(CatalystTypeConverters.scala:396)
+	at org.apache.spark.sql.execution.aggregate.MutableAggregationBufferImpl.update(udaf.scala:246)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.outputForEmptyGroupingKeyWithoutInput(SortBasedAggregationIterator.scala:162)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:102)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+
+21/01/19 14:01:18 ERROR SparkUncaughtExceptionHandler: [Container in shutdown] Uncaught exception in thread Thread[Executor task launch worker for task 4583,5,main]
+java.lang.OutOfMemoryError: Java heap space
+21/01/19 14:01:18 ERROR TaskSetManager: Task 4 in stage 78.0 failed 1 times; aborting job
+[Stage 78:>                                                       (0 + 8) / 200]Traceback (most recent call last):
+  File "/home/jenniferwu/Documents/Python_projects/GitLab/ML-algorithms-uvicorn-gunicorn-fastapi/app/algorithms/supervised_machine_learning.py", line 225, in <module>
+    retiled.select('prediction', 'red', 'grn', 'blu', 'extent', 'crs').write.geotiff(outfile, crs='EPSG:4326', raster_dimensions=(1558, 1507))
+  File "/root/anaconda3/envs/RasterFrames/lib/python3.7/site-packages/pyrasterframes/__init__.py", line 277, in _geotiff_writer
+    return _aliased_writer(df_writer, "geotiff", path, **options)
+  File "/root/anaconda3/envs/RasterFrames/lib/python3.7/site-packages/pyrasterframes/__init__.py", line 107, in _aliased_writer
+    return df_writer.format(format_key).save(path, **options)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/sql/readwriter.py", line 739, in save
+    self._jwrite.save(path)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1257, in __call__
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/sql/utils.py", line 63, in deco
+    return f(*a, **kw)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/protocol.py", line 328, in get_return_value
+py4j.protocol.Py4JJavaError: An error occurred while calling o476.save.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 4 in stage 78.0 failed 1 times, most recent failure: Lost task 4.0 in stage 78.0 (TID 4586, localhost, executor driver): java.lang.OutOfMemoryError: Java heap space
+	at geotrellis.raster.DoubleArrayTile.toBytes(DoubleArrayTile.scala:37)
+	at org.locationtech.rasterframes.model.Cells$.apply(Cells.scala:65)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:88)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$class.toInternalRow(CatalystSerializer.scala:46)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.toInternalRow(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$WithToRow.toInternalRow(CatalystSerializer.scala:146)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:39)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$UDTConverter.toCatalystImpl(CatalystTypeConverters.scala:143)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$CatalystTypeConverter.toCatalyst(CatalystTypeConverters.scala:103)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$$anonfun$createToCatalystConverter$2.apply(CatalystTypeConverters.scala:396)
+	at org.apache.spark.sql.execution.aggregate.MutableAggregationBufferImpl.update(udaf.scala:246)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.outputForEmptyGroupingKeyWithoutInput(SortBasedAggregationIterator.scala:162)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:102)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1891)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1879)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1878)
+	at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:48)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1878)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:927)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:927)
+	at scala.Option.foreach(Option.scala:257)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:927)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2112)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2061)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2050)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:738)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2061)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2082)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2101)
+	at org.apache.spark.sql.execution.SparkPlan.executeTake(SparkPlan.scala:365)
+	at org.apache.spark.sql.execution.CollectLimitExec.executeCollect(limit.scala:38)
+	at org.apache.spark.sql.Dataset.org$apache$spark$sql$Dataset$$collectFromPlan(Dataset.scala:3389)
+	at org.apache.spark.sql.Dataset$$anonfun$head$1.apply(Dataset.scala:2550)
+	at org.apache.spark.sql.Dataset$$anonfun$head$1.apply(Dataset.scala:2550)
+	at org.apache.spark.sql.Dataset$$anonfun$52.apply(Dataset.scala:3370)
+	at org.apache.spark.sql.execution.SQLExecution$$anonfun$withNewExecutionId$1.apply(SQLExecution.scala:80)
+	at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:127)
+	at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:75)
+	at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3369)
+	at org.apache.spark.sql.Dataset.head(Dataset.scala:2550)
+	at org.apache.spark.sql.Dataset.head(Dataset.scala:2557)
+	at org.apache.spark.sql.Dataset.first(Dataset.scala:2564)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate$.collect(TileRasterizerAggregate.scala:166)
+	at org.locationtech.rasterframes.datasource.geotiff.GeoTiffDataSource.createRelation(GeoTiffDataSource.scala:85)
+	at org.apache.spark.sql.execution.datasources.SaveIntoDataSourceCommand.run(SaveIntoDataSourceCommand.scala:45)
+	at org.apache.spark.sql.execution.command.ExecutedCommandExec.sideEffectResult$lzycompute(commands.scala:70)
+	at org.apache.spark.sql.execution.command.ExecutedCommandExec.sideEffectResult(commands.scala:68)
+	at org.apache.spark.sql.execution.command.ExecutedCommandExec.doExecute(commands.scala:86)
+	at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$1.apply(SparkPlan.scala:131)
+	at org.apache.spark.sql.execution.SparkPlan$$anonfun$execute$1.apply(SparkPlan.scala:127)
+	at org.apache.spark.sql.execution.SparkPlan$$anonfun$executeQuery$1.apply(SparkPlan.scala:155)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.sql.execution.SparkPlan.executeQuery(SparkPlan.scala:152)
+	at org.apache.spark.sql.execution.SparkPlan.execute(SparkPlan.scala:127)
+	at org.apache.spark.sql.execution.QueryExecution.toRdd$lzycompute(QueryExecution.scala:83)
+	at org.apache.spark.sql.execution.QueryExecution.toRdd(QueryExecution.scala:81)
+	at org.apache.spark.sql.DataFrameWriter$$anonfun$runCommand$1.apply(DataFrameWriter.scala:677)
+	at org.apache.spark.sql.DataFrameWriter$$anonfun$runCommand$1.apply(DataFrameWriter.scala:677)
+	at org.apache.spark.sql.execution.SQLExecution$$anonfun$withNewExecutionId$1.apply(SQLExecution.scala:80)
+	at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:127)
+	at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:75)
+	at org.apache.spark.sql.DataFrameWriter.runCommand(DataFrameWriter.scala:677)
+	at org.apache.spark.sql.DataFrameWriter.saveToV1Source(DataFrameWriter.scala:286)
+	at org.apache.spark.sql.DataFrameWriter.save(DataFrameWriter.scala:272)
+	at org.apache.spark.sql.DataFrameWriter.save(DataFrameWriter.scala:230)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.GatewayConnection.run(GatewayConnection.java:238)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.OutOfMemoryError: Java heap space
+	at geotrellis.raster.DoubleArrayTile.toBytes(DoubleArrayTile.scala:37)
+	at org.locationtech.rasterframes.model.Cells$.apply(Cells.scala:65)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:88)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.to(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$class.toInternalRow(CatalystSerializer.scala:46)
+	at org.apache.spark.sql.rf.TileUDT$$anon$1.toInternalRow(TileUDT.scala:76)
+	at org.locationtech.rasterframes.encoders.CatalystSerializer$WithToRow.toInternalRow(CatalystSerializer.scala:146)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT$$anonfun$serialize$1.apply(TileUDT.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:51)
+	at org.apache.spark.sql.rf.TileUDT.serialize(TileUDT.scala:39)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$UDTConverter.toCatalystImpl(CatalystTypeConverters.scala:143)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$CatalystTypeConverter.toCatalyst(CatalystTypeConverters.scala:103)
+	at org.apache.spark.sql.catalyst.CatalystTypeConverters$$anonfun$createToCatalystConverter$2.apply(CatalystTypeConverters.scala:396)
+	at org.apache.spark.sql.execution.aggregate.MutableAggregationBufferImpl.update(udaf.scala:246)
+	at org.locationtech.rasterframes.expressions.aggregates.TileRasterizerAggregate.initialize(TileRasterizerAggregate.scala:63)
+	at org.apache.spark.sql.execution.aggregate.ScalaUDAF.initialize(udaf.scala:423)
+	at org.apache.spark.sql.execution.aggregate.AggregationIterator.initializeBuffer(AggregationIterator.scala:277)
+	at org.apache.spark.sql.execution.aggregate.SortBasedAggregationIterator.outputForEmptyGroupingKeyWithoutInput(SortBasedAggregationIterator.scala:162)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:102)
+	at org.apache.spark.sql.execution.aggregate.SortAggregateExec$$anonfun$doExecute$1$$anonfun$3.apply(SortAggregateExec.scala:77)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.RDD$$anonfun$mapPartitionsWithIndexInternal$1$$anonfun$13.apply(RDD.scala:845)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:346)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:310)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+
+ERROR:root:Exception while sending command.
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1159, in send_command
+    raise Py4JNetworkError("Answer from Java side is empty")
+py4j.protocol.Py4JNetworkError: Answer from Java side is empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 985, in send_command
+    response = connection.send_command(command)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1164, in send_command
+    "Error while receiving", e, proto.ERROR_ON_RECEIVE)
+py4j.protocol.Py4JNetworkError: Error while receiving
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server (127.0.0.1:41209)
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 929, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1067, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+Process finished with exit code 1
