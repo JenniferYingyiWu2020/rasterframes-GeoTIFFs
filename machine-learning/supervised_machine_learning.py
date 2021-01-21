@@ -42,8 +42,8 @@ spark = create_rf_spark_session(**{
 
 # The imagery for feature data will come from eleven bands of 60 meter resolution Sentinel-2 imagery.
 # We also will use the scene classification (SCL) data to identify high quality, non-cloudy pixels.
-uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
-# uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
+# uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
+uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
 bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
 cols = ['SCL'] + bands
 
@@ -91,8 +91,9 @@ crses = df.select('crs.crsProj4').distinct().collect()
 print('Found ', len(crses), 'distinct CRS.')
 crs = crses[0][0]
 
-spark.sparkContext.addFile('https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
-# spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
+# spark.sparkContext.addFile(
+#     'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
+spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
 
 label_df = spark.read.geojson(SparkFiles.get('luray-labels.geojson')) \
     .select('id', st_reproject('geometry', lit('EPSG:4326'), lit(crs)).alias('geometry')) \
@@ -109,7 +110,6 @@ df_labeled = df_joined.withColumn('label',
 # Masking Poor Quality Cells
 # To filter only for good quality pixels, we follow roughly the same procedure as demonstrated in the quality masking section of the chapter on NoData.
 # Instead of actually setting NoData values in the unwanted cells of any of the imagery bands, we will just filter out the mask cell values later in the process.
-
 df_labeled = df_labeled \
     .withColumn('mask', rf_local_is_in('scl', [0, 1, 8, 9, 10]))
 
@@ -178,12 +178,13 @@ eval = MulticlassClassificationEvaluator(
 accuracy = eval.evaluate(prediction_df)
 print("\nAccuracy:", accuracy)
 
-# As an example of using the flexibility provided by DataFrames, the code below computes and displays the confusion matrix.
-cnf_mtrx = prediction_df.groupBy(classifier.getPredictionCol()) \
-    .pivot(classifier.getLabelCol()) \
-    .count() \
-    .sort(classifier.getPredictionCol())
-cnf_mtrx
+# As an example of using the flexibility provided by DataFrames,
+# the code below computes and displays the confusion matrix.
+# cnf_mtrx = prediction_df.groupBy(classifier.getPredictionCol()) \
+#     .pivot(classifier.getLabelCol()) \
+#     .count() \
+#     .sort(classifier.getPredictionCol())
+# cnf_mtrx
 
 # Visualize Prediction
 # Because the pipeline included a TileExploder, we will recreate the tiled data structure.
@@ -191,17 +192,17 @@ cnf_mtrx
 # See the rf_assemble_tile function documentation for more details.
 # In this case, the pipeline is scoring on all areas, regardless of whether they intersect the label polygons.
 # This is simply done by removing the label column, as discussed above.
-scored = model.transform(df_mask.drop('label'))
-
-retiled = scored \
-    .groupBy('extent', 'crs') \
-    .agg(
-    rf_assemble_tile('column_index', 'row_index', 'prediction', tile_size, tile_size).alias('prediction'),
-    rf_assemble_tile('column_index', 'row_index', 'B04', tile_size, tile_size).alias('red'),
-    rf_assemble_tile('column_index', 'row_index', 'B03', tile_size, tile_size).alias('grn'),
-    rf_assemble_tile('column_index', 'row_index', 'B02', tile_size, tile_size).alias('blu')
-)
-retiled.printSchema()
+# scored = model.transform(df_mask.drop('label'))
+#
+# retiled = scored \
+#     .groupBy('extent', 'crs') \
+#     .agg(
+#     rf_assemble_tile('column_index', 'row_index', 'prediction', tile_size, tile_size).alias('prediction'),
+#     rf_assemble_tile('column_index', 'row_index', 'B04', tile_size, tile_size).alias('red'),
+#     rf_assemble_tile('column_index', 'row_index', 'B03', tile_size, tile_size).alias('grn'),
+#     rf_assemble_tile('column_index', 'row_index', 'B02', tile_size, tile_size).alias('blu')
+# )
+# retiled.printSchema()
 
 # Take a look at a sample of the resulting prediction and the corresponding area’s red-green-blue composite image.
 # Note that because each prediction tile is rendered independently, the colors may not have the same meaning across rows.
@@ -222,12 +223,20 @@ retiled.printSchema()
 
 # Writing Raster Data - GeoTIFFs
 outfile = os.path.join('/tmp', 'geotiff-supervised-machine-learning.tif')
-retiled.select('prediction', 'red', 'grn', 'blu', 'extent', 'crs').write.geotiff(outfile, crs='EPSG:4326', raster_dimensions=(558, 507))
+
+model.transform(df) \
+    .groupBy('extent', 'crs') \
+    .agg(
+    rf_assemble_tile('column_index', 'row_index', 'prediction', tile_size, tile_size).alias('prediction'),
+    rf_assemble_tile('column_index', 'row_index', 'B04', tile_size, tile_size).alias('red'),
+    rf_assemble_tile('column_index', 'row_index', 'B03', tile_size, tile_size).alias('grn'),
+    rf_assemble_tile('column_index', 'row_index', 'B02', tile_size, tile_size).alias('blu')
+) \
+    .write.geotiff(outfile, crs=crs, raster_dimensions=(1830 // 4, 1830 // 4))
 
 # We can view the written file with `rasterio`
 with rasterio.open(outfile) as src:
+    for b in range(1, src.count + 1):
+        print("Tags on band", b, src.tags(b))
     # View raster
-    show(src, adjust='linear')
-    # View data distribution
-    show_hist(src, bins=50, lw=0.0, stacked=False, alpha=0.6,
-              histtype='stepfilled', title="Overview Histogram")
+    show(src)

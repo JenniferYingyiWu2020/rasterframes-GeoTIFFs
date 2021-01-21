@@ -11,7 +11,7 @@ from pyspark.ml import Pipeline
 from pyrasterframes.utils import create_rf_spark_session
 
 from pyrasterframes.rf_types import CellType
-# from pyrasterframes.rf_types import Extent
+# from docs-pyrasterframes.rf_types import Extent
 
 import os.path
 
@@ -29,10 +29,20 @@ catalog_df = pd.DataFrame([
     {'b' + str(b): filenamePattern.format(b) for b in range(1, 8)}
 ])
 
-df = spark.read.raster(catalog_df, catalog_col_names=catalog_df.columns)
+# df = spark.read.raster(catalog_df, catalog_col_names=catalog_df.columns)
+tile_size = 256
+df = spark.read.raster(catalog_df, catalog_col_names=catalog_df.columns, tile_size=tile_size)
 df = df.withColumn('crs', rf_crs(df.b1)) \
     .withColumn('extent', rf_extent(df.b1))
 df.printSchema()
+
+# In this small example, all the images in our `catalog_df` have the same @ref:[CRS](concepts.md
+# #coordinate-reference-system-crs-), which we verify in the code snippet below.
+# The `crs` object will be useful for visualization later.
+crses = df.select('crs.crsProj4').distinct().collect()
+print('Found ', len(crses), 'distinct CRS: ', crses)
+assert len(crses) == 1
+crs = crses[0]['crsProj4']
 
 # Create ML Pipeline
 # SparkML requires that each observation be in its own row,
@@ -48,6 +58,7 @@ exploder = TileExploder()
 #     .setInputCols(list(catalog_df.columns)) \
 #     .setOutputCol("features")
 
+# To "vectorize" the band columns, we use the SparkML `VectorAssembler`.
 assembler = VectorAssembler(inputCols=list(catalog_df.columns), outputCol="features", handleInvalid="skip")
 
 # For this problem, we will use the K-means clustering algorithm and configure our model to have 5 clusters.
@@ -80,11 +91,16 @@ print("Within set sum of squared errors: %s" % metric)
 # Visualize Prediction
 # We can recreate the tiled data structure using the metadata added by the TileExploder pipeline stage.
 
-tile_dims = df.select(rf_dimensions(df.b1).alias('dims')).first()['dims']
+# tile_dims = df.select(rf_dimensions(df.b1).alias('dims')).first()['dims']
+# retiled = clustered.groupBy('extent', 'crs') \
+#     .agg(
+#     rf_assemble_tile('column_index', 'row_index', 'prediction',
+#                      tile_dims['cols'], tile_dims['rows'], CellType.int8()).alias('prediction')
+# )
 retiled = clustered.groupBy('extent', 'crs') \
     .agg(
     rf_assemble_tile('column_index', 'row_index', 'prediction',
-                     tile_dims['cols'], tile_dims['rows'], CellType.int8()).alias('prediction')
+                     tile_size, tile_size, CellType.int8())
 )
 
 # The resulting output is shown below.
@@ -101,13 +117,33 @@ retiled = clustered.groupBy('extent', 'crs') \
 # df.select(rf_render_png('b4', 'b3', 'b2'))
 
 # ============================================Writing Raster Data - GeoTIFFs============================================
-outfile = os.path.join('/tmp', 'geotiff-unsupervised-machine-learning.tif')
-retiled.select('prediction', 'crs', 'extent').write.geotiff(outfile, crs='epsg:3857', raster_dimensions=(558, 507))
+# outfile = os.path.join('/tmp', 'geotiff-unsupervised-machine-learning.tif')
+# retiled.select('prediction', 'crs', 'extent').write.geotiff(outfile, crs='epsg:3857', raster_dimensions=(558, 507))
+
+# Next we will @ref:[write the output to a GeoTiff file](raster-write.md#geotiffs).
+# Doing so in this case works quickly and well for a few specific reasons that may not hold in all cases.
+# We can write the data at full resolution, by omitting the `raster_dimensions` argument,
+# because we know the input raster dimensions are small.
+# Also, the data is all in a single CRS, as we demonstrated above.
+# Because the `catalog_df` is only a single row, we know the output GeoTIFF value at a given location corresponds to
+# a single input. Finally, the `retiled` `DataFrame` only has a single `Tile` column,
+# so the band interpretation is trivial.
+
+# output_tif = 'unsupervised.tif'
+output_tif = os.path.join('/tmp', 'geotiff-unsupervised-machine-learning.tif')
+
+retiled.write.geotiff(output_tif, crs=crs)
 
 # ======================================We can view the written file with `rasterio`====================================
-with rasterio.open(outfile) as src:
+# with rasterio.open(outfile) as src:
+#     # View raster
+#     show(src, adjust='linear')
+#     # View data distribution
+#     show_hist(src, bins=50, lw=0.0, stacked=False, alpha=0.6,
+#               histtype='stepfilled', title="Overview Histogram")
+
+with rasterio.open(output_tif) as src:
+    for b in range(1, src.count + 1):
+        print("Tags on band", b, src.tags(b))
     # View raster
-    show(src, adjust='linear')
-    # View data distribution
-    show_hist(src, bins=50, lw=0.0, stacked=False, alpha=0.6,
-              histtype='stepfilled', title="Overview Histogram")
+    show(src)
