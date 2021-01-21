@@ -42,8 +42,8 @@ spark = create_rf_spark_session(**{
 
 # The imagery for feature data will come from eleven bands of 60 meter resolution Sentinel-2 imagery.
 # We also will use the scene classification (SCL) data to identify high quality, non-cloudy pixels.
-# uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
-uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
+uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
+# uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
 bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
 cols = ['SCL'] + bands
 
@@ -91,9 +91,9 @@ crses = df.select('crs.crsProj4').distinct().collect()
 print('Found ', len(crses), 'distinct CRS.')
 crs = crses[0][0]
 
-# spark.sparkContext.addFile(
-#     'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
-spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
+spark.sparkContext.addFile(
+    'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
+# spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
 
 label_df = spark.read.geojson(SparkFiles.get('luray-labels.geojson')) \
     .select('id', st_reproject('geometry', lit('EPSG:4326'), lit(crs)).alias('geometry')) \
