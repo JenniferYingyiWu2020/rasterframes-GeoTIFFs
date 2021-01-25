@@ -42,9 +42,11 @@ spark = create_rf_spark_session(**{
 
 # The imagery for feature data will come from eleven bands of 60 meter resolution Sentinel-2 imagery.
 # We also will use the scene classification (SCL) data to identify high quality, non-cloudy pixels.
-uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
+# uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
 # uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
-bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
+uri_base = 'file:///home/jenniferwu/Raster_Data_Set/20200613clip/{}.tif'
+# bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
+bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B9', 'B10', 'B11']
 cols = ['SCL'] + bands
 
 catalog_df = pd.DataFrame([
@@ -55,21 +57,36 @@ tile_size = 256
 df = spark.read.raster(catalog_df, catalog_col_names=cols, tile_dimensions=(tile_size, tile_size)) \
     .repartition(100)
 
+# df = df.select(
+#     rf_crs(df.B01).alias('crs'),
+#     rf_extent(df.B01).alias('extent'),
+#     rf_tile(df.SCL).alias('scl'),
+#     rf_tile(df.B01).alias('B01'),
+#     rf_tile(df.B02).alias('B02'),
+#     rf_tile(df.B03).alias('B03'),
+#     rf_tile(df.B04).alias('B04'),
+#     rf_tile(df.B05).alias('B05'),
+#     rf_tile(df.B06).alias('B06'),
+#     rf_tile(df.B07).alias('B07'),
+#     rf_tile(df.B08).alias('B08'),
+#     rf_tile(df.B09).alias('B09'),
+#     rf_tile(df.B11).alias('B11'),
+#     rf_tile(df.B12).alias('B12'),
+# )
 df = df.select(
-    rf_crs(df.B01).alias('crs'),
-    rf_extent(df.B01).alias('extent'),
+    rf_crs(df.B1).alias('crs'),
+    rf_extent(df.B1).alias('extent'),
     rf_tile(df.SCL).alias('scl'),
-    rf_tile(df.B01).alias('B01'),
-    rf_tile(df.B02).alias('B02'),
-    rf_tile(df.B03).alias('B03'),
-    rf_tile(df.B04).alias('B04'),
-    rf_tile(df.B05).alias('B05'),
-    rf_tile(df.B06).alias('B06'),
-    rf_tile(df.B07).alias('B07'),
-    rf_tile(df.B08).alias('B08'),
-    rf_tile(df.B09).alias('B09'),
+    rf_tile(df.B1).alias('B1'),
+    rf_tile(df.B2).alias('B2'),
+    rf_tile(df.B3).alias('B3'),
+    rf_tile(df.B4).alias('B4'),
+    rf_tile(df.B5).alias('B5'),
+    rf_tile(df.B6).alias('B6'),
+    rf_tile(df.B7).alias('B7'),
+    rf_tile(df.B9).alias('B9'),
+    rf_tile(df.B10).alias('B10'),
     rf_tile(df.B11).alias('B11'),
-    rf_tile(df.B12).alias('B12'),
 )
 df.printSchema()
 
@@ -91,16 +108,17 @@ crses = df.select('crs.crsProj4').distinct().collect()
 print('Found ', len(crses), 'distinct CRS.')
 crs = crses[0][0]
 
-spark.sparkContext.addFile(
-    'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
+# spark.sparkContext.addFile(
+#     'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
 # spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
+spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/20200613clip/clip_label.json')
 
-label_df = spark.read.geojson(SparkFiles.get('luray-labels.geojson')) \
+label_df = spark.read.geojson(SparkFiles.get('clip_label.json')) \
     .select('id', st_reproject('geometry', lit('EPSG:4326'), lit(crs)).alias('geometry')) \
     .hint('broadcast')
 
 df_joined = df.join(label_df, st_intersects(st_geometry('extent'), 'geometry')) \
-    .withColumn('dims', rf_dimensions('B01'))
+    .withColumn('dims', rf_dimensions('B1'))
 
 # Add a column from ".tiff"
 df_labeled = df_joined.withColumn('label',
@@ -111,7 +129,7 @@ df_labeled = df_joined.withColumn('label',
 # To filter only for good quality pixels, we follow roughly the same procedure as demonstrated in the quality masking section of the chapter on NoData.
 # Instead of actually setting NoData values in the unwanted cells of any of the imagery bands, we will just filter out the mask cell values later in the process.
 df_labeled = df_labeled \
-    .withColumn('mask', rf_local_is_in('scl', [0, 1, 8, 9, 10]))
+    .withColumn('mask', rf_local_is_in('scl', [1, 2, 3, 4]))
 
 # at this point the mask contains 0 for good cells and 1 for defect, etc
 # convert cell type and set value 1 to NoData
@@ -228,9 +246,9 @@ model.transform(df) \
     .groupBy('extent', 'crs') \
     .agg(
     rf_assemble_tile('column_index', 'row_index', 'prediction', tile_size, tile_size).alias('prediction'),
-    rf_assemble_tile('column_index', 'row_index', 'B04', tile_size, tile_size).alias('red'),
-    rf_assemble_tile('column_index', 'row_index', 'B03', tile_size, tile_size).alias('grn'),
-    rf_assemble_tile('column_index', 'row_index', 'B02', tile_size, tile_size).alias('blu')
+    rf_assemble_tile('column_index', 'row_index', 'B4', tile_size, tile_size).alias('red'),
+    rf_assemble_tile('column_index', 'row_index', 'B3', tile_size, tile_size).alias('grn'),
+    rf_assemble_tile('column_index', 'row_index', 'B2', tile_size, tile_size).alias('blu')
 ) \
     .write.geotiff(outfile, crs=crs, raster_dimensions=(1830 // 4, 1830 // 4))
 
