@@ -1,0 +1,114 @@
+root
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- scl: tile (nullable = true)
+ |-- B1: tile (nullable = true)
+ |-- B2: tile (nullable = true)
+ |-- B3: tile (nullable = true)
+ |-- B4: tile (nullable = true)
+ |-- B5: tile (nullable = true)
+ |-- B6: tile (nullable = true)
+ |-- B7: tile (nullable = true)
+ |-- B9: tile (nullable = true)
+ |-- B10: tile (nullable = true)
+ |-- B11: tile (nullable = true)
+
+Found  1 distinct CRS.
+root
+ |-- crs: struct (nullable = true)
+ |    |-- crsProj4: string (nullable = false)
+ |-- extent: struct (nullable = true)
+ |    |-- xmin: double (nullable = false)
+ |    |-- ymin: double (nullable = false)
+ |    |-- xmax: double (nullable = false)
+ |    |-- ymax: double (nullable = false)
+ |-- scl: tile (nullable = true)
+ |-- B1: tile (nullable = true)
+ |-- B2: tile (nullable = true)
+ |-- B3: tile (nullable = true)
+ |-- B4: tile (nullable = true)
+ |-- B5: tile (nullable = true)
+ |-- B6: tile (nullable = true)
+ |-- B7: tile (nullable = true)
+ |-- B9: tile (nullable = true)
+ |-- B10: tile (nullable = true)
+ |-- B11: tile (nullable = true)
+ |-- id: long (nullable = true)
+ |-- geometry: geometry (nullable = true)
+ |-- dims: struct (nullable = true)
+ |    |-- cols: integer (nullable = false)
+ |    |-- rows: integer (nullable = false)
+ |-- label: tile (nullable = true)
+ |-- mask: tile (nullable = true)
+
+21/01/25 14:07:46 ERROR Instrumentation: org.apache.spark.SparkException: ML algorithm was given empty dataset.
+	at org.apache.spark.ml.classification.Classifier.getNumClasses(Classifier.scala:113)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:106)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:101)
+	at org.apache.spark.ml.util.Instrumentation$$anonfun$11.apply(Instrumentation.scala:185)
+	at scala.util.Try$.apply(Try.scala:192)
+	at org.apache.spark.ml.util.Instrumentation$.instrumented(Instrumentation.scala:185)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:101)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:46)
+	at org.apache.spark.ml.Predictor.fit(Predictor.scala:118)
+	at org.apache.spark.ml.Predictor.fit(Predictor.scala:82)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.GatewayConnection.run(GatewayConnection.java:238)
+	at java.lang.Thread.run(Thread.java:748)
+
+Traceback (most recent call last):
+  File "/home/jenniferwu/Documents/Python_projects/GitHub/rasterframes-GeoTIFFs/machine-learning/supervised_machine_learning.py", line 179, in <module>
+    model = pipeline.fit(model_input)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/base.py", line 132, in fit
+    return self._fit(dataset)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/pipeline.py", line 109, in _fit
+    model = stage.fit(dataset)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/base.py", line 132, in fit
+    return self._fit(dataset)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/wrapper.py", line 295, in _fit
+    java_model = self._fit_java(dataset)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/wrapper.py", line 292, in _fit_java
+    return self._java_obj.fit(dataset._jdf)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/java_gateway.py", line 1257, in __call__
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/sql/utils.py", line 63, in deco
+    return f(*a, **kw)
+  File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/lib/py4j-0.10.7-src.zip/py4j/protocol.py", line 328, in get_return_value
+py4j.protocol.Py4JJavaError: An error occurred while calling o198.fit.
+: org.apache.spark.SparkException: ML algorithm was given empty dataset.
+	at org.apache.spark.ml.classification.Classifier.getNumClasses(Classifier.scala:113)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:106)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:101)
+	at org.apache.spark.ml.util.Instrumentation$$anonfun$11.apply(Instrumentation.scala:185)
+	at scala.util.Try$.apply(Try.scala:192)
+	at org.apache.spark.ml.util.Instrumentation$.instrumented(Instrumentation.scala:185)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:101)
+	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:46)
+	at org.apache.spark.ml.Predictor.fit(Predictor.scala:118)
+	at org.apache.spark.ml.Predictor.fit(Predictor.scala:82)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.GatewayConnection.run(GatewayConnection.java:238)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+Process finished with exit code 1

@@ -44,7 +44,7 @@ spark = create_rf_spark_session(**{
 # We also will use the scene classification (SCL) data to identify high quality, non-cloudy pixels.
 # uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
 # uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
-uri_base = 'file:///home/jenniferwu/Raster_Data_Set/20200613clip/{}.tif'
+uri_base = '../image-dataset/20200613clip/{}.tif'
 # bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
 bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B9', 'B10', 'B11']
 cols = ['SCL'] + bands
@@ -57,22 +57,6 @@ tile_size = 256
 df = spark.read.raster(catalog_df, catalog_col_names=cols, tile_dimensions=(tile_size, tile_size)) \
     .repartition(100)
 
-# df = df.select(
-#     rf_crs(df.B01).alias('crs'),
-#     rf_extent(df.B01).alias('extent'),
-#     rf_tile(df.SCL).alias('scl'),
-#     rf_tile(df.B01).alias('B01'),
-#     rf_tile(df.B02).alias('B02'),
-#     rf_tile(df.B03).alias('B03'),
-#     rf_tile(df.B04).alias('B04'),
-#     rf_tile(df.B05).alias('B05'),
-#     rf_tile(df.B06).alias('B06'),
-#     rf_tile(df.B07).alias('B07'),
-#     rf_tile(df.B08).alias('B08'),
-#     rf_tile(df.B09).alias('B09'),
-#     rf_tile(df.B11).alias('B11'),
-#     rf_tile(df.B12).alias('B12'),
-# )
 df = df.select(
     rf_crs(df.B1).alias('crs'),
     rf_extent(df.B1).alias('extent'),
@@ -108,10 +92,7 @@ crses = df.select('crs.crsProj4').distinct().collect()
 print('Found ', len(crses), 'distinct CRS.')
 crs = crses[0][0]
 
-# spark.sparkContext.addFile(
-#     'https://github.com/locationtech/rasterframes/raw/develop/pyrasterframes/src/test/resources/luray-labels.geojson')
-# spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/luray-labels.geojson')
-spark.sparkContext.addFile('/home/jenniferwu/Raster_Data_Set/20200613clip/clip_label.json')
+spark.sparkContext.addFile('../image-dataset/20200613clip/clip_label.json')
 
 label_df = spark.read.geojson(SparkFiles.get('clip_label.json')) \
     .select('id', st_reproject('geometry', lit('EPSG:4326'), lit(crs)).alias('geometry')) \
