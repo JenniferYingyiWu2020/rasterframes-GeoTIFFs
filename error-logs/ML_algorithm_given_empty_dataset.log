@@ -46,7 +46,7 @@ root
  |-- label: tile (nullable = true)
  |-- mask: tile (nullable = true)
 
-21/01/25 14:07:46 ERROR Instrumentation: org.apache.spark.SparkException: ML algorithm was given empty dataset.
+21/01/25 14:21:41 ERROR Instrumentation: org.apache.spark.SparkException: ML algorithm was given empty dataset.
 	at org.apache.spark.ml.classification.Classifier.getNumClasses(Classifier.scala:113)
 	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:106)
 	at org.apache.spark.ml.classification.DecisionTreeClassifier$$anonfun$train$1.apply(DecisionTreeClassifier.scala:101)
@@ -56,7 +56,6 @@ root
 	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:101)
 	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:46)
 	at org.apache.spark.ml.Predictor.fit(Predictor.scala:118)
-	at org.apache.spark.ml.Predictor.fit(Predictor.scala:82)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -70,7 +69,7 @@ root
 	at java.lang.Thread.run(Thread.java:748)
 
 Traceback (most recent call last):
-  File "/home/jenniferwu/Documents/Python_projects/GitHub/rasterframes-GeoTIFFs/machine-learning/supervised_machine_learning.py", line 179, in <module>
+  File "/home/jenniferwu/Documents/Python_projects/GitHub/rasterframes-GeoTIFFs/machine-learning/supervised_machine_learning.py", line 157, in <module>
     model = pipeline.fit(model_input)
   File "/opt/spark/spark-2.4.6-bin-hadoop2.7/python/pyspark/ml/base.py", line 132, in fit
     return self._fit(dataset)
@@ -97,7 +96,6 @@ py4j.protocol.Py4JJavaError: An error occurred while calling o198.fit.
 	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:101)
 	at org.apache.spark.ml.classification.DecisionTreeClassifier.train(DecisionTreeClassifier.scala:46)
 	at org.apache.spark.ml.Predictor.fit(Predictor.scala:118)
-	at org.apache.spark.ml.Predictor.fit(Predictor.scala:82)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

@@ -25,9 +25,9 @@ from rasterio.plot import show, show_hist
 
 # import os
 
-os.environ['AWS_NO_SIGN_REQUEST'] = 'YES'
-
-gt_aws_no_sign = '-Dgeotrellis.raster.gdal.option.AWS_NO_SIGN_REQUEST=YES'
+# os.environ['AWS_NO_SIGN_REQUEST'] = 'YES'
+#
+# gt_aws_no_sign = '-Dgeotrellis.raster.gdal.option.AWS_NO_SIGN_REQUEST=YES'
 
 spark = create_rf_spark_session(**{
     #     'spark.driver.extraJavaOptions': gt_aws_no_sign,
@@ -42,10 +42,7 @@ spark = create_rf_spark_session(**{
 
 # The imagery for feature data will come from eleven bands of 60 meter resolution Sentinel-2 imagery.
 # We also will use the scene classification (SCL) data to identify high quality, non-cloudy pixels.
-# uri_base = 's3://s22s-test-geotiffs/luray_snp/{}.tif'
-# uri_base = 'file:///home/jenniferwu/Raster_Data_Set/s22s-test-geotiffs/luray_snp/{}.tif'
 uri_base = '../image-dataset/20200613clip/{}.tif'
-# bands = ['B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B11', 'B12']
 bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B9', 'B10', 'B11']
 cols = ['SCL'] + bands
 
@@ -176,49 +173,6 @@ eval = MulticlassClassificationEvaluator(
 
 accuracy = eval.evaluate(prediction_df)
 print("\nAccuracy:", accuracy)
-
-# As an example of using the flexibility provided by DataFrames,
-# the code below computes and displays the confusion matrix.
-# cnf_mtrx = prediction_df.groupBy(classifier.getPredictionCol()) \
-#     .pivot(classifier.getLabelCol()) \
-#     .count() \
-#     .sort(classifier.getPredictionCol())
-# cnf_mtrx
-
-# Visualize Prediction
-# Because the pipeline included a TileExploder, we will recreate the tiled data structure.
-# The explosion transformation includes metadata enabling us to recreate the tiles.
-# See the rf_assemble_tile function documentation for more details.
-# In this case, the pipeline is scoring on all areas, regardless of whether they intersect the label polygons.
-# This is simply done by removing the label column, as discussed above.
-# scored = model.transform(df_mask.drop('label'))
-#
-# retiled = scored \
-#     .groupBy('extent', 'crs') \
-#     .agg(
-#     rf_assemble_tile('column_index', 'row_index', 'prediction', tile_size, tile_size).alias('prediction'),
-#     rf_assemble_tile('column_index', 'row_index', 'B04', tile_size, tile_size).alias('red'),
-#     rf_assemble_tile('column_index', 'row_index', 'B03', tile_size, tile_size).alias('grn'),
-#     rf_assemble_tile('column_index', 'row_index', 'B02', tile_size, tile_size).alias('blu')
-# )
-# retiled.printSchema()
-
-# Take a look at a sample of the resulting prediction and the corresponding area’s red-green-blue composite image.
-# Note that because each prediction tile is rendered independently, the colors may not have the same meaning across rows.
-# scaling_quantiles = retiled.agg(
-#     rf_agg_approx_quantiles('red', [0.03, 0.97]).alias('red_q'),
-#     rf_agg_approx_quantiles('grn', [0.03, 0.97]).alias('grn_q'),
-#     rf_agg_approx_quantiles('blu', [0.03, 0.97]).alias('blu_q')
-# ).first()
-#
-# retiled.select(
-#     rf_render_png(
-#         rf_local_clamp('red', *scaling_quantiles['red_q']).alias('red'),
-#         rf_local_clamp('grn', *scaling_quantiles['grn_q']).alias('grn'),
-#         rf_local_clamp('blu', *scaling_quantiles['blu_q']).alias('blu')
-#     ).alias('tci'),
-#     rf_render_color_ramp_png('prediction', 'ClassificationBoldLandUse').alias('prediction')
-# )
 
 # Writing Raster Data - GeoTIFFs
 outfile = os.path.join('/tmp', 'geotiff-supervised-machine-learning.tif')
